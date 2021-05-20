@@ -1,11 +1,11 @@
 // Dependencies to hold and save data
-
 const storeData = require('..db/storeData');
+const app = require('express');
 
 module.exports = (app) => {
 
 // GET request
-app.get('/api/notes', (req, res) => res.json(storeData));
+app.get('/api/notes', (req, res) => {res.json(storeData)});
 
 // POST request
 app.post('api/notes', (req, res) => {
