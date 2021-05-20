@@ -7,14 +7,14 @@ const app = require('express');
 module.exports = (app) => {
 
 // Read File
-const storeData = data => {
+const notes = data => {
 fs.readFile('./db/db.json', 'utf8', (err, data) => {
     if (err) throw err;
     console.log(err);
 
 // Updated Database
 const updateDatabase = data => {
-    fs.writeFile('db/db.json', JSON.stringify(storeData, '\t'), err => {
+    fs.writeFile('db/db.json', JSON.stringify(notes, '\t'), err => {
         if (err){
             console.log (err);
             return;
@@ -30,10 +30,10 @@ app.get('/api/notes', (req, res) => {res.json(storeData)
 
 // POST request
 app.post('/api/notes', (req, res) => {
-    let addNote = req.body;
-    storeData.push(addNote);
+    let newNote = req.body;
+    storeData.push(newNote);
     updateDatabase();
-    return console.log('Successfully added note: '`${addNote.title}`);
+    return console.log('Successfully added note: '`${newNote.title}`);
 });
 
 // GET request for specific id
@@ -44,7 +44,7 @@ app.get('/api/notes/:id', (req, res) => {
 
 // DELETE request
 app.delete('/api/notes:id', (req, res) => {
-    storeData.spice(req.params.id, 1);
+    notes.spice(req.params.id, 1);
     updateDatabase();
     console.log('Successfully deleted note '`${req.params.id}`);
 });
