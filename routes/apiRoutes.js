@@ -7,14 +7,14 @@ const app = require('express');
 module.exports = (app) => {
 
 // Read File
-const notes = data => {
+const note = data => {
 fs.readFile('./db/db.json', 'utf8', (err, data) => {
     if (err) throw err;
     console.log(err);
 
 // Updated Database
 const updateDatabase = data => {
-    fs.writeFile('db/db.json', JSON.stringify(notes, '\t'), err => {
+    fs.writeFile('db/db.json', JSON.stringify(note, '\t'), err => {
         if (err){
             console.log (err);
             return;
@@ -44,7 +44,7 @@ app.get('/api/notes/:id', (req, res) => {
 
 // DELETE request
 app.delete('/api/notes:id', (req, res) => {
-    notes.spice(req.params.id, 1);
+    notes.splice(req.params.id, 1);
     updateDatabase();
     console.log('Successfully deleted note '`${req.params.id}`);
 });
