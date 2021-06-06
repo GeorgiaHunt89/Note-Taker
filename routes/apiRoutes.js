@@ -2,19 +2,18 @@
 const path = require('path');
 const fs = require('fs');
 const app = require('express');
+const uniqid = require('uniqid');
 
 
 module.exports = (app) => {
 
 // Read File
-const note = data => {
-fs.readFile('./db/db.json', 'utf8', (err, data) => {
-    if (err) throw err;
-    console.log(err);
+const notes = fs.readFileSync(path.join(__dirname,'./db/db.json'));
+
 
 // Updated Database
-const updateDatabase = data => {
-    fs.writeFile('db/db.json', JSON.stringify(note, '\t'), err => {
+const updateDatabase = storeData => {
+    fs.writeFile('./db/db.json', JSON.stringify(storeData, '\t'), err => {
         if (err){
             console.log (err);
             return;
@@ -24,31 +23,32 @@ const updateDatabase = data => {
     });
 }
 
-// GET request
-app.get('/api/notes', (req, res) => {res.json(storeData)
+// GET ROUTE sets up the route for notes then reads the json file and returns saved notes
+app.get('../public/notes.html', (req, res) => {
+    res.json(storeData)
 });
 
-// POST request
-app.post('/api/notes', (req, res) => {
-    let newNote = req.body;
+// POST ROUTE sets up the route to post notes
+app.post('../public/notes.html', async (req, res) => {
+    // Passes new note to json and then returns the note
+    let newNote = await {id:uniqid(), title: req.body.title, text: req.body.text}
     storeData.push(newNote);
     updateDatabase();
     return console.log('Successfully added note: '`${newNote.title}`);
 });
 
-// GET request for specific id
-app.get('/api/notes/:id', (req, res) => {
+// GET REQUEST retrieves a note via its specific id
+app.get('../public/notes.html/:id', (req, res) => {
     res.json(storeData[req.params.id]);
 });
 
 
-// DELETE request
-app.delete('/api/notes:id', (req, res) => {
+// DELETE REQUEST deletes a specified note via its id
+app.delete('../public/notes.html/:id', (req, res) => {
     notes.splice(req.params.id, 1);
     updateDatabase();
     console.log('Successfully deleted note '`${req.params.id}`);
 });
 
-});
+
 };
-}
